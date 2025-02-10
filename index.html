@@ -17,14 +17,38 @@
 
 </head>
 <body>
-	<div class="container" style="width: 80%;">
+	<div class="container" style="width: 95%;">
 		<h1>Koel-TTS: Enhancing LLM based Speech Generation with Preference Alignment and Classifier Free Guidance</h1>
 		
         
 		<!-- <div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;"></div> -->
 		<div style="border-top: 1px solid grey; margin-top: 20px; margin-bottom: 10px;"></div>
 
-		<p>Coming Soon</p>
+		<div class="row">
+			
+			<h3>Improvements from Preference Alignment and CFG</h3>
+			
+			<p>
+				For zero-shot any-to-any voice convrsion, we select 10 target speakers (5 random Male and 5 random Female)
+				from the <i>test-clean</i> subset of the LibriTTS dataset. Next, we randomly select 20 source utterances from the remaining
+				speakers and perform voice conversion for each of the 10 target speakers. We present a few audio examples for this experiment in the table below.
+			</p>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Text</th>
+						<th>Context Audio</th>
+						<th>Base Model</th>
+						<th>Base Model + CFG</th>
+						<th>Base Model + Pref Alignment</th>
+						<th><b>Base Model + Pref Alignment + CFG</b></th>
+					</tr>
+				</thead>
+				<tbody id = "table1" >
+					
+				</tbody>
+			</table>
+		</div>
 		
 	
 </body>
@@ -32,6 +56,46 @@
 	
 	
 <script type="text/javascript">
+
+
+function fill_audio_table(tbody_id, audio_columns, transcripts, audio_width){
+	var num_rows = audio_columns[1].length;
+	var base_url = "https://expressivecloning.s3.us-east-2.amazonaws.com/KoelTTSICML2025/"
+	for(var ridx=0; ridx < num_rows; ridx++){
+		var tr_string = "<tr>";
+		tr_string += '<td style="word-wrap: break-word; white-space: normal; text-align: left; max-width: 300px; width: 300px;">' + transcripts[ridx] + '</td>';
+		for(var cidx=0; cidx < audio_columns.length; cidx++){
+			var audio_url = audio_columns[cidx][ridx];
+			if(!audio_url.startsWith("audio/") ){
+				audio_url = base_url + audio_columns[cidx][ridx];	
+			}
+			tr_string += '<td><audio class="class_audio" controls="" style="width:'+ audio_width +'px; text-align: center;"><source src="' + audio_url + '" type="audio/wav">Your browser does not support the audio tag</audio>';
+			tr_string += '</td>';
+		}
+		tr_string += "</tr>";
+		$("#" + tbody_id).append(tr_string);
+	}
+}
+
+
+var techniques = ["koel_decoder_base", "koel_decoder_only_cfg2.4", "koel_decoder_only_prefalign", "koel_decoder_withcfgwithprefalign"];
+var audio_columns = [];
+var selected_audio_examples = [5, 34, 15, 38, 114]
+for(var tidx=0; tidx < techniques.length; tidx++){
+	var audio_column = [];
+	for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+		audio_column.push(techniques[tidx] + "/audio/predicted_audio_" + selected_audio_examples[aidx] + ".wav");
+	}
+	audio_columns.push(audio_column);
+}
+context_audio_column = [];
+for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+	context_audio_column.push(techniques[0] + "/audio/context_audio_" + selected_audio_examples[aidx] + ".wav");
+}
+
+var transcripts = ['Does the Eagle know what is in the pit? Or wilt thou go ask the Mole: Can Wisdom be put in a silver rod? Or Love in a golden bowl?', 'The marshal and his posse, including Sheriff Jones, went among other invited guests and enjoyed the proffered hospitality.', 'The late astounding events, however, had rendered Procope manifestly uneasy, and not the less so from his consciousness that the count secretly partook of his own anxiety.', 'It did not beckon, or indeed move at all; it was as still as the hand of death.', 'On august twenty seventh eighteen thirty seven, she writes:--']
+fill_audio_table("table1", [context_audio_column].concat(audio_columns), transcripts, 250);
+
 
 </script>	
 
