@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+
+	<title>Koel-TTS</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="style_examples.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+	<div class="container" style="width: 95%;">
+		<h1>Koel-TTS: Enhancing LLM based Speech Generation with Preference Alignment and Classifier Free Guidance</h1>
+		
+        
+		<!-- <div style="border: 1px solid black; margin-top: 20px; margin-bottom: 10px;"></div> -->
+		<div style="border-top: 1px solid grey; margin-top: 20px; margin-bottom: 10px;"></div>
+		<p>
+			We present audio examples for Koel-TTS. Koel-TTS is a suite of enhanced encoder-decoder Transformer TTS models, 
+			that address the challenges in autoregressive LLM-based TTS models through preference alignment and classifier free guidance (CFG).
+			Our experiments demonstrate that these techniques, improve adherence to the conditioning signals, significantly improving audio quality, intelligibility, and speaker similarity.
+			Notably, Koel-TTS directly maps text and context audio to acoustic tokens, and on the aforementioned metrics, outperforms state-of-the-art TTS models, despite being trained on a significantly smaller dataset.
+		</p>
+		<div class="row">
+			<h2>Koel-TTS Capabilities</h2>
+			<p>
+				In this section, we present audio examples for various capabilities of the Koel-TTS model.
+				The below audio examples are from the 1.1b Koel-TTS Multilingual model (Decoder context architecture). 
+				The last example is from a fine-tuned model for podcast-style TTS, which we elaborate later in this webpage.
+				Koel-TTS is capable of various tasks including zero-shot TTS, expressive TTS, multi-lingual and zero-shot cross-lingual TTS, 
+				when conditioned on the appropriate context audio and text.
+			</p>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Capability</th>
+						<th>Text</th>
+						<th>Context Audio</th>
+						<th><b>Koel-TTS (Generated Audio)</b></th>
+					</tr>
+				</thead>
+				<tbody id = "table_highlights" >
+					
+				</tbody>
+			</table>
+
+		</div>
+
+		<div style="border-top: 1px solid grey; margin-top: 20px; margin-bottom: 10px;"></div>		
+		<div class="row">
+			
+			<h2>Improvements from Preference Alignment and CFG (zero shot TTS on test-clean LibriTTS)</h2>
+			
+			<p>
+				We present audio examples for the zero-shot TTS task considering various Koel-TTS architectures and configurations.
+				These examples are from the 380m Koel-TTS model, considering the decoder context, multi-encoder, and SV conditioned architectures.
+				The context audio and texts are from the test-clean subset of the LibriTTS dataset.
+				We present examples for the base model, base model with CFG inference, preference aligned model and preference aligned model with CFG inference.
+				As evident from the examples, the base model often struggles with audio quality, intelligibility, and predicting end of sentences.
+				These issues are significantly alleviated by the preference alignment and CFG inference, 
+				with the best results obtained when both techniques are combined.	
+			</p>
+
+			<h4>Decoder Context Koel-TTS</h4>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Text</th>
+						<th>Context Audio</th>
+						<th>Base Model</th>
+						<th>Base Model + CFG</th>
+						<th>Base Model + Pref Alignment</th>
+						<th><b>Base Model + Pref Alignment + CFG</b></th>
+					</tr>
+				</thead>
+				<tbody id = "table_dec_base_cfg_pref" >
+					
+				</tbody>
+			</table>
+			
+			<h4>Multi-encoder Koel-TTS</h4>
+
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Text</th>
+						<th>Context Audio</th>
+						<th>Base Model</th>
+						<th>Base Model + CFG</th>
+						<th>Base Model + Pref Alignment</th>
+						<th><b>Base Model + Pref Alignment + CFG</b></th>
+					</tr>
+				</thead>
+				<tbody id = "table_multi_base_cfg_pref" >
+					
+				</tbody>
+			</table>
+
+
+			<h4>SV conditioned Koel-TTS</h4>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Text</th>
+						<th>Context Audio</th>
+						<th>Base Model</th>
+						<th>Base Model + CFG</th>
+						<th>Base Model + Pref Alignment</th>
+						<th><b>Base Model + Pref Alignment + CFG</b></th>
+					</tr>
+				</thead>
+				<tbody id = "table_sv_base_cfg_pref" >
+					
+				</tbody>
+
+			</table>
+
+			<img src="audio/dpo_cfg_improvements.png" style="width: 70%; margin-top: 20px; margin-bottom: 20px ; display: block; margin-left: auto; margin-right: auto;">
+			<p style="text-align: center;">Figure 1: Intelligibility (CER) and speaker similarity (SSIM) evaluations of the base and preference-aligned (RPO) Koel-TTS
+				architectures, with and without CFG, on zero-shot TTS.</p>
+
+		</div>
+
+		<div style="border-top: 1px solid grey; margin-top: 20px; margin-bottom: 10px;"></div>
+		<div class="row">
+			
+			<h3>Multi Lingual TTS</h3>
+			
+			<p>
+			In this section, we present audio examples for the zero-shot TTS task in multiple languages.
+			For this task, we consider the 1.1b Koel-TTS model with the decoder context architecture.
+			The context audio and texts are from the test set of the CML dataset.
+			We present examples for the base model and the base model with preference alignment and CFG inference.
+			As evident from the examples, the base model often struggles with audio quality, intelligibility, and predicting end of sentences.
+			Similar to the previous section, these issues are significantly alleviated by the preference alignment and CFG inference.
+			In all of the examples below, the text is tokenized using a separate character tokenizer.
+			</p>
+			
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#spanish_tab">Spanish</a></li>
+				<li><a data-toggle="tab" href="#german_tab">German</a></li>
+				<li><a data-toggle="tab" href="#french_tab">French</a></li>
+				<li><a data-toggle="tab" href="#italian_tab">Italian</a></li>
+				<li><a data-toggle="tab" href="#dutch_tab">Dutch</a></li>
+			</ul>
+			
+			<div class="tab-content">
+				<div id="spanish_tab" class="tab-pane fade in active">
+					<table class="table" style="margin-top: 10px; margin-bottom: 20px;">
+						<thead>
+							<tr>
+								<th>Text</th>
+								<th>Context</th>
+								<th>Base Model</th>
+								<th>Base Model + Pref Alignment + CFG</th>
+							</tr>
+						</thead>
+						<tbody id = "table_spanish" >
+							
+						</tbody>
+					</table>
+				</div>
+
+				<div id="german_tab" class="tab-pane fade">
+					<table class="table" style="margin-top: 10px; margin-bottom: 20px;">
+						<thead>
+							<tr>
+								<th>Text</th>
+								<th>Context</th>
+								<th>Base Model</th>
+								<th>Base Model + Pref Alignment + CFG</th>
+							</tr>
+						</thead>
+						<tbody id = "table_german" >
+							
+						</tbody>
+					</table>
+				</div>
+
+				<div id="french_tab" class="tab-pane fade">
+					<table class="table" style="margin-top: 10px; margin-bottom: 20px;">
+						<thead>
+							<tr>
+								<th>Text</th>
+								<th>Context</th>
+								<th>Base Model</th>
+								<th>Base Model + Pref Alignment + CFG</th>
+							</tr>
+						</thead>
+						<tbody id = "table_french" >
+							
+						</tbody>
+					</table>
+				</div>
+
+				<div id="italian_tab" class="tab-pane fade">
+					<table class="table" style="margin-top: 10px; margin-bottom: 20px;">
+						<thead>
+							<tr>
+								<th>Text</th>
+								<th>Context</th>
+								<th>Base Model</th>
+								<th>Base Model + Pref Alignment + CFG</th>
+							</tr>
+						</thead>
+						<tbody id = "table_italian" >
+							
+						</tbody>
+					</table>
+				</div>
+
+				<div id="dutch_tab" class="tab-pane fade">
+					<table class="table" style="margin-top: 10px; margin-bottom: 20px;">
+						<thead>
+							<tr>
+								<th>Text</th>
+								<th>Context</th>
+								<th>Base Model</th>
+								<th>Base Model + Pref Alignment + CFG</th>
+							</tr>
+						</thead>
+						<tbody id = "table_dutch" >
+							
+						</tbody>
+					</table>
+				</div>
+				
+			</div>
+			<!-- center the image -->
+			<img src="audio/multilingual_with_legend.png" style="width: 60%; margin-top: 20px; margin-bottom: 20px ; display: block; margin-left: auto; margin-right: auto;">
+			<!-- Caption -->
+			<center>
+			<p style="text-align: center; width: 60%;">Figure 2: Intelligibility (CER) and speaker similarity (SSIM) evaluations for a decoder-context multilingual TTS model across
+				various languages and text tokenizers. Both CFG and preference alignment, independently and together, improve CER and SSIM metrics</p>
+			</center>
+		</div>
+
+		<div style="border-top: 1px solid grey; margin-top: 20px; margin-bottom: 10px;"></div>
+
+		<div class="row">
+			<h2>Podcast-Style TTS</h2>
+			<p>
+				For podcast-style TTS, we fine-tuned the 1.1b Koel-TTS model on a proprietary multi-turn conversational TTS dataset. 
+				To enable this capability, the <i>context audio</i>, <i>text</i> and <i>target</i> triplets (for training and inference) are constructed as follows:
+				The <i>context audio</i> is the last N seconds of the previous conversation (potentially containing audio from both or one of the speakers).
+				The <i>text</i> contains the transcript with speaker tags. The <i>target</i> contains audio corresponding to the speaker-tagged transcript.
+				This is demonstrated in the image below. Such a setup allows us to use the model recursively to generate multi-turn conversational TTS.
+				We present two examples of such podcast-style TTS below.
+			</p>
+			<img src="audio/koel_podcast.png" style="width: 40%; margin-top: 20px; margin-bottom: 20px ; display: block; margin-left: auto; margin-right: auto;">
+			<center>
+			<p style="text-align: center; width: 40%;">Figure 3: Koel-TTS finetuning and inference setup for podcast-style TTS. 
+				The decoder is conditioned on the past 5 seconds of audio. The text input to the model contains speaker tags and the model learns 
+				to switch the voice to the corrsponding speaker tag.</p>
+			</center>
+			<table class="table" style="margin-top: 20px;">
+				<thead>
+					<tr>
+						<th>Transcript</th>
+						<th><b>Koel-TTS (Generated Audio)</b></th>
+					</tr>
+				</thead>
+				<tbody id="table_podcast">
+					
+				</tbody>
+			</table>
+
+		</div>
+	
+</body>
+	
+	
+	
+<script type="text/javascript">
+
+
+function fill_audio_table(tbody_id, audio_columns, transcripts, audio_width, tasks, max_examples=null){
+	var num_rows = audio_columns[0].length;
+	if (max_examples != null){
+		num_rows = Math.min(num_rows, max_examples);
+	}
+	var base_url = "https://expressivecloning.s3.us-east-2.amazonaws.com/KoelTTSICML2025/"
+	for(var ridx=0; ridx < num_rows; ridx++){
+		var tr_string = "<tr>";
+		if (tasks != undefined){
+			tr_string += '<td style="word-wrap: break-word; white-space: normal; text-align: left; max-width: 300px; width: 300px;">' + tasks[ridx] + '</td>';
+		}
+		tr_string += '<td style="word-wrap: break-word; white-space: normal; text-align: left; max-width: 300px; width: 300px;">' + transcripts[ridx] + '</td>';
+		for(var cidx=0; cidx < audio_columns.length; cidx++){
+			var audio_url = audio_columns[cidx][ridx];
+			if(audio_url == "null"){
+				tr_string += '<td></td>';
+				continue;
+			}
+			if(!audio_url.startsWith("/audio/") ){
+				audio_url = base_url + audio_columns[cidx][ridx];	
+			}
+			tr_string += '<td><center><audio class="class_audio" controls="" style="width:'+ audio_width +'px; text-align: center;"><source src="' + audio_url + '" type="audio/wav">Your browser does not support the audio tag</audio><center>';
+			tr_string += '</td>';
+		}
+		tr_string += "</tr>";
+		$("#" + tbody_id).append(tr_string);
+	}
+}
+
+// Highlights
+tasks = [
+	"Zero-shot TTS (Male Speaker)",
+	"Zero-shot TTS (Male Speaker)<br>Context: test-clean LibriTTS",
+	"Zero-shot TTS (Female Speaker)<br>Context: test-clean LibriTTS",
+	"Expressive TTS (Fearful Female Speaker)",
+	"Expressive TTS (Angry Male Speaker)",
+	"Zero-shot TTS (Cross-lingual)<br>English speaker, Italian text",
+	"Zero-shot TTS (Cross-lingual Expressive)<br>English speaker, Spanish text",
+	"<b>Podcast-Style TTS*</b>"
+]
+
+context_column = [
+	"/audio/jensen_context.wav",
+	"/audio/7729_102255_000012_000001_context.wav",
+	"/audio/zeroshot_female_context.wav",
+	"/audio/syntheticcontexts/lindy_fearful3.wav",
+	"/audio/syntheticcontexts/rodney_angry1.wav",
+	"/audio/syntheticcontexts/lindy_neutral2.wav",
+	"/audio/syntheticcontexts/lindy_fearful3.wav",
+	"null"
+]
+
+predicted_column = [
+	"/audio/jensen_generated_transform.wav",
+	"/audio/7729_102255_000012_000001_generated.wav",
+	"/audio/zeroshot_female_predicted.wav",
+	"/audio/lindy_fearful_wind_howled.wav",
+	"/audio/rodney_angry_wind_howled.wav",
+	"/audio/lindy_wizwiki_italian.wav",
+	"/audio/lindy_spanish_fearful.wav",
+	"/audio/podcast_highlight.wav"
+];
+
+transcripts = [
+	"You can transform challenges into opportunities, and inspire others with your strength and grace.",
+	"Today the sky is clear and the sun is shining, making it an ideal day to enjoy a walk.",
+	"Today the sky is clear and the sun is shining, making it an ideal day to enjoy a walk.",
+	"The wind howled through the trees as flickering candlelight cast eerie shadows, hinting at something unseen lurking in the darkness.",
+	"The wind howled through the trees as flickering candlelight cast eerie shadows, hinting at something unseen lurking in the darkness.",
+	"L'universo sussurra i suoi segreti a chi sa ascoltare.",
+	"La sombra susurra mi nombre.",
+	"[SPK-FEMALE1] Have you been keeping up with multi-turn TTS models? They are so fascinating [SPK-MALE1] Absolutely. The way they handle conversations feels almost human...."
+]
+
+fill_audio_table("table_highlights", [context_column, predicted_column], transcripts, 300, tasks);
+
+// Decoder context
+var techniques = ["koel_decoder_base", "koel_decoder_only_cfg2.4", "koel_decoder_only_prefalign", "koel_decoder_withcfgwithprefalign"];
+var audio_columns = [];
+var selected_audio_examples = [34, 114, 5, 15, 38]
+for(var tidx=0; tidx < techniques.length; tidx++){
+	var audio_column = [];
+	for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+		audio_column.push(techniques[tidx] + "/audio/predicted_audio_" + selected_audio_examples[aidx] + ".wav");
+	}
+	audio_columns.push(audio_column);
+}
+context_audio_column = [];
+for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+	context_audio_column.push(techniques[0] + "/audio/context_audio_" + selected_audio_examples[aidx] + ".wav");
+}
+
+var transcripts = ['The marshal and his posse, including Sheriff Jones, went among other invited guests and enjoyed the proffered hospitality.', 
+'On august twenty seventh eighteen thirty seven, she writes:--', 
+'Does the Eagle know what is in the pit? Or wilt thou go ask the Mole: Can Wisdom be put in a silver rod? Or Love in a golden bowl?', 
+'The late astounding events, however, had rendered Procope manifestly uneasy, and not the less so from his consciousness that the count secretly partook of his own anxiety.', 
+'It did not beckon, or indeed move at all; it was as still as the hand of death.']
+fill_audio_table("table_dec_base_cfg_pref", [context_audio_column].concat(audio_columns), transcripts, 250, null, max_examples=3);
+
+// Multi encoder
+techniques = ["koel_multiencoder_base", "koel_multiencoder_only_cfg2.4", "koel_multiencoder_only_prefalign", "koel_multiencoder_with_prefalign_with_cfg"];
+audio_columns = [];
+selected_audio_examples = [59, 20, 49, 52, 76]
+for(var tidx=0; tidx < techniques.length; tidx++){
+	var audio_column = [];
+	for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+		audio_column.push(techniques[tidx] + "/audio/predicted_audio_" + selected_audio_examples[aidx] + ".wav");
+	}
+	audio_columns.push(audio_column);
+}
+context_audio_column = [];
+for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+	context_audio_column.push(techniques[0] + "/audio/context_audio_" + selected_audio_examples[aidx] + ".wav");
+}
+
+var transcripts = ['Let me think: was I the same when I got up this morning?', "Margolotte had first made the girl's form from the patchwork quilt and then she had dressed it with a patchwork skirt and an apron with pockets in it-using the same gay material throughout.", 'To live, to err, to fall, to triumph, to recreate life out of life!', 'All the more stress would be laid on this fact, as it would be an exceptional one; for I am informed by mr Denny that the most different kinds of dogs, fowls, and pigeons, in England, are infested by the same species of Pediculi or lice.', "The expression of Crebillon's face was that of the lion's or of the cat's, which is the same thing."]
+fill_audio_table("table_multi_base_cfg_pref", [context_audio_column].concat(audio_columns), transcripts, 250, null, max_examples=3);
+
+// SV Conditioned
+techniques = ["koel_svencoder_base", "koel_svencoder_only_cfg2.4", "koel_svencoder_only_prefalign", "koel_svencoder_with_prefalign_withcfg"];
+audio_columns = [];
+selected_audio_examples = [119, 133, 160, 179]
+for(var tidx=0; tidx < techniques.length; tidx++){
+	var audio_column = [];
+	for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+		audio_column.push(techniques[tidx] + "/audio/predicted_audio_" + selected_audio_examples[aidx] + ".wav");
+	}
+	audio_columns.push(audio_column);
+}
+context_audio_column = [];
+for(var aidx=0; aidx < selected_audio_examples.length; aidx++){
+	context_audio_column.push(techniques[0] + "/audio/context_audio_" + selected_audio_examples[aidx] + ".wav");
+}
+
+var transcripts = ['Perceiving this, and with the view of eliciting information from them, he told them the tales of Phoroneus and Niobe, and also of Deucalion and Pyrrha, and he endeavoured to count the generations which had since passed.', 'And a child who never, from the beginning, finds any efficiency in them, never learns to employ them at all.', 'Her gloomy young heart was visited by frequent storms and she looked as unlovable as she was unloved.', 'For this and other reasons, Rodolfo readily complied with the wishes of his father, who gave him ample letters of credit on Barcelona, Genoa, Rome, and Naples.']
+fill_audio_table("table_sv_base_cfg_pref", [context_audio_column].concat(audio_columns), transcripts, 250, null, max_examples=3);
+
+
+multilingual_examples  = {'spanish': {'record_ids': [64, 10, 79, 94, 60], 'texts': ['porque, por la mayor parte, los que reciben son inferiores a los que dan;', 'Por mi parte, yo creo que, en efecto, hemos cometido una gran ligereza, un descuido imperdonable.', 'menos las calzadas, porque no sabían llevar las piedras que supieron traer los indios, y los acueductos, porque les traían el agua de beber. Ahora', 'Ah, señora! Olvida usted sin duda que hay cosas que jamás se perdonan; cosas. En fin, que quien bien está, que no se mueva', 'que no se fundan sobre natural razón alguna, del que es discreto han de ser tenidos y juzgar por buenos acontecimientos.']}, 'german': {'record_ids': [65, 14, 22, 51, 21], 'texts': ['Ich kann aber darüber nicht klagen, wenn ich zum Beispiel zusehe, wie es dem Fleischer gegenüber geht.', 'Groß richteten sich die Augen des Mädchens auf den Mann.', 'Robert wandte sich ab und ging fort.', 'Den Rock nahm es auf den Arm, denn der Großvater kenne es jetzt schon, dachte es bei sich;', 'die Leute fühlten keine Härte, weil so viel Menschliches und so viel Amüsant-Theatralisches dabei war. Und es gab keinen Menschen im Dorfe']}, 'french': {'record_ids': [55, 59, 58, 56, 54], 'texts': ["L'alouette à l'essor, le maître s'en vient faire Sa ronde ainsi qu'à l'ordinaire", "Elle bâtit un nid, pond, couve, et fait éclore, À la hâte: le tout alla du mieux qu'il put.", "Il n'est meilleur ami ni parent que soi-même. Retenez bien cela, mon fils. Et savez-vous Ce qu'il faut faire", "Dès lors que ce dessein fut su de l'alouette: C'est ce coup qu'il est bon de partir, mes enfants!", "L'aube du jour arrive, et d'amis point du tout."]}, 'italian': {'record_ids': [12, 32, 30, 90], 'texts': ['e in tal maniera lo schernivano.', 'e tu che sei giovane, leggero e senza alcun peso soprapostoti, ricusi di carainare. Vieni, se vuoi venire; se non, fa come ti piace', 'ed egli non ha salvo che una moglie, e non sa ammaestrarla, che le sia obediente.', 'e tanto il marchese quanto la moglie e la figliuola sono divenute tre vittime di lui.']}, 'dutch': {'record_ids': [18, 96, 88, 84, 67], 'texts': ['Toen zij de kam gekocht had, zei de oude vrouw: Ik wil je er toch eens netjes mee kammen.', 'Ik dacht, dat hij de misdaad gedaan had voor hetgeen in die blikken trommel was en dat hij mij nu wel eens goed kon betalen voor het feit, dat ik mijn mond', 'De ongelukkige viel bijna om van schrik. Hij bracht de handen voor zijn gezicht en beefde weer als een riet. Waar hebt u dat gevonden? stotterde hij. Ik wist het niet. Ik dacht, dat ik het in het hotel had verloren', 'Iemand heeft getracht de deur te openen, zeide hij.', 'maar wie, dat wilde de regenworm niet zeggen, of hij wist het niet.']}}
+
+languages = ['spanish', 'german', 'french', 'italian', 'dutch']
+for(var lidx=0; lidx < languages.length; lidx++){
+	var language = languages[lidx];
+	var record_ids = multilingual_examples[language]['record_ids'];
+	var texts = multilingual_examples[language]['texts'];
+	var audio_columns = [];
+	var context_audio_column = [];
+	var base_pred_column = [];
+	var best_pred_column = [];
+	for(var ridx=0; ridx < record_ids.length; ridx++){
+		var base_dir = "CML_WithRivaSpanish_NoPolishPortugese_SeparateCharTokenizer_epoch12_Temp0.6_Topk80_Cfg_False_1.0_" + language + "_cml_sep_char" ;
+		var best_dir = "SeparateCharTokenizer_epoch12_fp32_DPO_3epochs_AllLanguages_0.05_ng1_epoch3_Temp0.6_Topk80_Cfg_True_2.5_" + language + "_cml_sep_char";
+		context_audio_column.push("multilingualForPaper/" + base_dir + "/audio/context_audio_" + record_ids[ridx] + ".wav");
+		base_pred_column.push("multilingualForPaper/" + base_dir + "/audio/predicted_audio_" + record_ids[ridx] + ".wav");
+		best_pred_column.push("multilingualForPaper/" + best_dir + "/audio/predicted_audio_" + record_ids[ridx] + ".wav");
+	}
+	audio_columns = [context_audio_column, base_pred_column, best_pred_column];
+	fill_audio_table("table_" + language, audio_columns, texts, 300, null);
+}
+
+
+// Podcast
+predicted_audio_column = [
+	"/audio/t5tts_podcast_surfing_demo_page.wav",
+	"/audio/t5tts_podcast_ttstopic_demo_page.wav",
+]
+
+transcripts = [
+	"[Spk1] Hey Jake, how was your morning surf? [Spk2] It was awesome, Sarah. The waves were perfect—about 4 to 5 feet and super clean. How about you? Did you make it out? [Spk1] I did! I was out just before sunrise. The lineup was pretty empty, and the water was so glassy. [Spk2] That sounds amazing. Did you try that new board you mentioned last week? [Spk1] Yep, finally got to break it in. It's a bit shorter than what I'm used to, but it was so responsive. Took me a few tries to get the hang of it, though. [Spk2] New boards are like that. But once you find the sweet spot, it's a game-changer. Catch anything memorable? [Spk1] Oh, totally. There was this one left-hand wave that felt like it went on forever. I was just cruising along, soaking in the moment. [Spk2] Nice! Nothing beats that feeling. I had a similar ride this morning. Caught a long right, and it felt like I could do a million turns. [Spk1] That's the dream, right? Makes all those wipeouts worth it. [Spk2] Exactly. Speaking of, did you see Matt wipe out on that set wave yesterday? Looked brutal! [Spk1] I did! I couldn't believe he popped back up so quickly. He was laughing about it later, though. [Spk2] Classic Matt. Always laughing, even after eating it hard. Surfing's not just about the waves—it's about the vibe, too. [Spk1] Totally agree. Good waves, good friends, and good vibes—that's what it's all about. [Spk2] Couldn't have said it better myself. Same time tomorrow? [Spk1] You bet. See you at dawn! [Spk2] See you then, Sarah!",
+	"[Spk1] Hey Ted, did you hear about the new text-to-speech model? [Spk2] You mean the one that mimics real conversations? Yeah, sounds promising.[Spk1] It’s incredible! It can synthesize multi-speaker dialogues that feel natural, like a real podcast. [Spk2] That’s pretty wild. How does it handle the flow, though? Conversations aren’t just linear. [Spk1] That’s the genius part. It uses context modeling to predict pauses, overlaps, and even intonations. [Spk2] So it’s not just text-to-speech—it’s conversational text-to-speech. [Spk1] Exactly. You can write a script, and it sounds like two people talking casually. [Spk2] Perfect for podcasts or even audiobooks. What about ethical safeguards? [Spk1] Built-in watermarks and verification tools. They’re taking misuse seriously. [Spk2] That’s good to know. Sounds like this could change the game for content creators. [Spk1] It really could. The possibilities are endless."
+]
+
+fill_audio_table("table_podcast", [predicted_audio_column], transcripts, 300, null);
+
+</script>	
+
+
+</html>
